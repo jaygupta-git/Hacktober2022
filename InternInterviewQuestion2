@@ -1,4 +1,10 @@
 // Question 2
+Pattern for the question was 
+    * 
+  *   *
+ *  *   *
+ 
+   
 
 #include<bits/stdc++.h>
 using namespace std;
