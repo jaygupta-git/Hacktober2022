@@ -1,0 +1,51 @@
+// Question 3
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    // variable to keep track where the star will be printed
+    int k = 0;
+    // flag to reverse direction
+    bool reverse = false;
+
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+            // if stars are to be printed in non-reverse pattern
+            if(j==k and !reverse)
+            {
+                cout<<"*";
+                k++;
+                if(k==3)
+                {
+                    k-=2;
+                    reverse = true;
+                }
+                break;
+            }
+            // if stars to be printed in reverse pattern
+            else if(j==k and reverse)
+            {
+                cout<<"*";
+                k--;
+                if(k==-1)
+                {
+                    k+=2;
+                    reverse = false;
+                }
+                break;
+            }
+            // printing spaces where star is not there
+            else cout<<" ";
+        }
+        cout<<endl;
+    }
+
+    return 0;
+}
