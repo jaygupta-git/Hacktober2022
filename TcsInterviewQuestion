@@ -1,0 +1,176 @@
+// TestCases
+
+// 2
+// 0 0 
+// 0 10
+// 5
+// Atul 24 A 0 1
+// Sunil 24 B 0 5
+// Rajni 23 A 0 1
+// Salman 21 B 0 12
+// Kunal 24 A 0 2
+
+
+
+
+// 3
+// 0 1
+// 0 5
+// 0 10
+// 3
+// Atul 24 A 0 2
+// Niraj 22 A 0 3
+// Shivam 21 B 0 2
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef pair<int, int> pi;
+
+struct student_data
+{
+    string name;
+    int age;
+    char category;
+    int x;
+    int y;
+};
+
+int calculateDistance(int x1, int y1, int x2, int y2)
+{
+    int dist = sqrt((pow((x2 - x1), 2)) + (pow((y2 - y1), 2)));
+    return dist;
+}
+
+void sortBasisOnAge(vector<int> &arr, struct student_data p_array[])
+{
+    vector<pair<int, int>> v;
+
+    for (long unsigned int i = 0; i < arr.size(); i++)
+    {
+        v.push_back({p_array[arr[i]].age, arr[i]});
+    }
+    sort(v.begin(), v.end());
+    for (long unsigned int i = 0; i < arr.size(); i++)
+    {
+        arr[i] = v[arr.size() - 1 - i].second;
+    }
+}
+
+void sortBasisOnCategory(vector<int> &arr, struct student_data p_array[])
+{
+
+    map<int, map<char, vector<int>>, greater<int>> mp;
+
+    for (long unsigned int i = 0; i < arr.size(); i++)
+    {
+        mp[p_array[arr[i]].age][p_array[arr[i]].category].push_back(arr[i]);
+    }
+
+    vector<int> ans;
+    for (auto i : mp)
+    {
+        vector<int> col;
+        for (auto j : i.second)
+        {
+            for (auto k : j.second)
+            {
+                ans.push_back(k);
+            }
+        }
+    }
+    for (long unsigned int i = 0; i < ans.size(); i++)
+    {
+        arr[i] = ans[i];
+    }
+}
+
+void sortOnBasisOfName(vector<int> &arr, struct student_data p_array[])
+{
+    for (long unsigned int i = 1; i < arr.size(); i++)
+    {
+        if ((p_array[arr[i]].category == p_array[arr[i - 1]].category) and (p_array[arr[i]].age == p_array[arr[i-1]].age))
+        {
+            if (p_array[arr[i]].name < p_array[arr[i - 1]].name)
+            {
+                swap(arr[i - 1], arr[i]);
+            }
+        }
+    }
+}
+
+void sortAndPrint(vector<int> arr, struct student_data p_array[])
+{
+    sortBasisOnAge(arr, p_array);
+    sortBasisOnCategory(arr, p_array);
+    sortOnBasisOfName(arr, p_array);
+
+    for (long unsigned int i = 0; i < arr.size(); i++)
+    {
+        cout <<p_array[arr[i]].name << " ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+    int vaccine_centers;
+    cin >> vaccine_centers;
+
+    vector<pi> center_coordinates(vaccine_centers);
+    for (int i = 0; i < vaccine_centers; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        center_coordinates[i].first = a;
+        center_coordinates[i].second = b;
+    }
+
+    int persons;
+    cin >> persons;
+
+    student_data p_array[persons];
+
+    for (int i = 0; i < persons; i++)
+    {
+        cin >> p_array[i].name >> p_array[i].age >> p_array[i].category >> p_array[i].x >> p_array[i].y;
+    }
+
+    map<int, int> person_to_center;
+    for (int i = 0; i < persons; i++)
+    {
+        int mini = INT_MAX;
+        for (int j = 0; j < vaccine_centers; j++)
+        {
+            int dist = calculateDistance(center_coordinates[j].first, center_coordinates[j].second,p_array[i].x, p_array[i].y);
+            if (dist < mini)
+            {
+                mini = min(mini, dist);
+                person_to_center[i] = j;
+            }
+        }
+    }
+
+    vector<vector<int>> persons_in_center(vaccine_centers);
+
+    for (auto i : person_to_center)
+    {
+        persons_in_center[i.second].push_back(i.first);
+    }
+
+    for (long unsigned int i = 0; i < persons_in_center.size(); i++)
+    {
+        if (persons_in_center[i].size() == 0)
+        {
+            cout << "Empty Centre" << endl;
+        }
+        else
+        {
+            sortAndPrint(persons_in_center[i], p_array);
+        }
+    }
+    return 0;
+}
