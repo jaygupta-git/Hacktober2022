@@ -1,4 +1,13 @@
 // Question 3
+// This pattern was something like this
+*
+  *
+   *
+  *
+ *
+   *
+  *
+&
 
 #include<bits/stdc++.h>
 using namespace std;
