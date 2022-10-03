@@ -1,3 +1,11 @@
+// Pattern for the question was a pyramid
+    *
+   * *
+  * * *
+ * * * *
+* * * * *
+
+
 #include<bits/stdc++.h>
 using namespace std;
 
